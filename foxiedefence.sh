@@ -45,6 +45,13 @@ while true; do
     if [ "$yeni_result" != "$last_result" ] && [ "$first_run" = false ]; then
       echo -e "${RED}ALERT: NEW ENTRY ON LAST! ${NC}"
       last
+      new_line=$(last | head -n 1)
+      read -p "${GREEN}INPUT: Do you wanna block this connection? (Y/N): " kick_option
+      if [ "$kick_option" == "Y" ] || [ "$kick_option" == "y" ]; then
+        username=$(echo "$new_line" | awk '{print $1}')
+        sudo pkill -KILL -u "$username"
+        echo "User succesfully kicked."
+      fi
     fi
 
     if [ "$yeni_user_count" != "$last_user_count" ] && [ "$first_run" = false ]; then
